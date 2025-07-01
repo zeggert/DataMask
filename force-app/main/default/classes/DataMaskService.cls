@@ -1,11 +1,17 @@
 public class DataMaskService {
 
+    private static final Set<String> sObjectExclusions = new Set<String>{'User'};
     // Create a list of SOQL strings. To make this work we need to loop through these queries in a batch job. That batch job will then enqueue a queuable class. The queueable class will then start another batch job to 
     public static List<String> getSoqlQueryStrings(Set<String> fieldTypes){
         Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
         List<String> soqlStringList = new List<String>();
 
         for (String objectName : globalDescribe.keySet()) {
+
+            if(sObjectExclusions.contains(objectName)) {
+                continue;
+            }
+
             Schema.SObjectType sobjectType = globalDescribe.get(objectName);
             Schema.DescribeSObjectResult describe = sobjectType.getDescribe();
 
@@ -88,10 +94,10 @@ public class DataMaskService {
 
         if (!updates.isEmpty()) {
             try {
-                update updates;
+                //update updates;
                 System.debug('Masked ' + updates.size() + ' records in ' + objectName);
             } catch (Exception e) {
-                System.debug('Error updating ' + objectName + ': ' + e.getMessage());
+                System.debug(LoggingLevel.ERROR, 'Error updating ' + objectName + ': ' + e.getMessage());
             }
         }
     }    
