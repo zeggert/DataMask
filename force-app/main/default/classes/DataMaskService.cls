@@ -61,7 +61,7 @@ public class DataMaskService {
 
     //every record in the list must be of the same type 
     public static void maskData(List<sObject> records, String maskingString) {
-        List<SObject> updates = new List<SObject>();
+        List<SObject> recordsToUpdate = new List<SObject>();
         //get sObject describe from record id
         Schema.DescribeSObjectResult sObjectDescribe = records[0].Id.getSObjectType().getDescribe();
         String objectName = sObjectDescribe.name;
@@ -72,7 +72,6 @@ public class DataMaskService {
             Map<String, Object> fieldsToValue = record.getPopulatedFieldsAsMap();
 
             for (String fieldName : fieldsToValue.keySet()){
-                
                 Schema.DisplayType fieldType = fields.get(fieldName).getDescribe().getType();
                 String fieldValue = String.valueOf(record.get(fieldName));
                 if (fieldType == Schema.DisplayType.Email) {
@@ -88,14 +87,14 @@ public class DataMaskService {
             }
 
             if (changed) {
-                updates.add(record);
+                recordsToUpdate.add(record);
             }
         }
 
-        if (!updates.isEmpty()) {
+        if (!recordsToUpdate.isEmpty()) {
             try {
-                //update updates;
-                System.debug('Masked ' + updates.size() + ' records in ' + objectName);
+                //update recordsToUpdate;
+                System.debug(LoggingLevel.ERROR, 'Masked ' + recordsToUpdate.size() + ' records in ' + objectName);
             } catch (Exception e) {
                 System.debug(LoggingLevel.ERROR, 'Error updating ' + objectName + ': ' + e.getMessage());
             }

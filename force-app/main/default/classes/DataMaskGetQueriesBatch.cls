@@ -1,3 +1,4 @@
+//Database.executeBatch(new DataMaskGetQueriesBatch(new Set<String>{'Email', 'Phone', 'Address'}), 1);
 global class DataMaskGetQueriesBatch implements Database.Batchable<String> {
    
     Set<String> fieldTypesToMask;
@@ -7,7 +8,6 @@ global class DataMaskGetQueriesBatch implements Database.Batchable<String> {
     }
 
     global Iterable<String> start(Database.BatchableContext BC) {
-
         return DatamaskService.getSoqlQueryStrings(fieldTypesToMask);
     }
 

@@ -11,7 +11,9 @@ global class DataMaskBatch implements Database.Batchable<sObject> {
     }
 
     global void execute(Database.BatchableContext BC, List<sObject> scope) {
-        DataMaskService.maskData(scope, 'test');
+        if(!scope.isEmpty()) {
+            DataMaskService.maskData(scope, 'test');
+        }
     }
 
     global void finish(Database.BatchableContext BC) {
