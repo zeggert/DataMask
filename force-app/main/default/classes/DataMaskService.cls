@@ -93,7 +93,7 @@ public class DataMaskService {
 
         if (!recordsToUpdate.isEmpty()) {
             try {
-                //update recordsToUpdate;
+                update recordsToUpdate;
                 System.debug(LoggingLevel.ERROR, 'Masked ' + recordsToUpdate.size() + ' records in ' + objectName);
             } catch (Exception e) {
                 System.debug(LoggingLevel.ERROR, 'Error updating ' + objectName + ': ' + e.getMessage());
